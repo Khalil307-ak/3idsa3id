@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عيد سعيد</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: #111;
+overflow: hidden;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+font-family: 'Orbitron', sans-serif;
+color: white;
+text-align: center;
+}
+
+.intro {
+position: absolute;
+font-size: 80px;
+color: #fff;
+text-shadow: 0 0 20px red, 0 0 40px yellow;
+animation: fadeOut 3s forwards ease-in-out;
+}
+
+@keyframes fadeOut {
+0% { opacity: 1; transform: scale(1); }
+50% { opacity: 0.5; transform: scale(1.3); }
+100% { opacity: 0; transform: scale(5); }
+}
+
+.main-content { display: none; }
+
+h1 {
+font-size: 90px;
+text-shadow: 0 0 20px white, 0 0 40px grey;
+opacity: 0;
+animation: appear 2s forwards, glow 1.5s infinite alternate 2s;
+}
+
+@keyframes appear {
+0% { opacity: 0; transform: scale(0.5); }
+100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes glow {
+0% { text-shadow: 0 0 20px white, 0 0 40px grey; }
+100% { text-shadow: 0 0 40px grey, 0 0 60px white; }
+}
+
+canvas {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+
+z-index: -1;
+}
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="intro">by: Khalil</div>
+
+<div class="main-content">
+<h1>🎉 عيد سعيد 🎉</h1>
+</div>
+
+<script>
+setTimeout(() => {
+document.querySelector(".intro").style.display = "none";
+document.querySelector(".main-content").style.display = "block";
+}, 3000);
+
+// تأثير البارتكلز
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particlesArray = [];
+const colors = ["#ffffff", "#aaaaaa"];
+
+class Particle {
+constructor() {
+this.x = Math.random() * canvas.width;
+this.y = Math.random() * canvas.height;
+this.size = Math.random() * 3 + 1;
+this.speedX = Math.random() * 1 - 0.5;
+this.speedY = Math.random() * 1 - 0.5;
+this.color = colors[Math.floor(Math.random() * colors.length)];
+}
+
+update() {
+this.x += this.speedX;
+this.y += this.speedY;
+if (this.size > 0.2) this.size -= 0.02;
+}
+
+draw() {
+ctx.fillStyle = this.color;
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+ctx.fill();
+}
+}
+
+function init() {
+particlesArray = [];
+for (let i = 0; i < 50; i++) {
+particlesArray.push(new Particle());
+}
+}
+
+function animate() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+for (let i = 0; i < particlesArray.length; i++) {
+particlesArray[i].update();
+particlesArray[i].draw();
+}
+requestAnimationFrame(animate);
+}
+
+init();
+animate();
+</script>
+
+</body>
+</html>
